@@ -6,7 +6,7 @@ pipeline {
  stages {
   stage('SCM') {
     steps {
-    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Keerthan25/Calculator.git']])
+    checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ashaavi/sonarqubeexample.git']])
   }
   }
      stage('SonarQube Analysis') {
