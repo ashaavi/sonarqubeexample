@@ -1,5 +1,8 @@
 pipeline{
     agent any
+     tools{
+          maven 'maven'
+     }
     stages{
         stage('SCM'){
             steps{
@@ -7,19 +10,26 @@ pipeline{
                 
             }
         }
-        stage('Build'){
+         stage('SonarQube Analysis'){
+           
+            steps{
+                withSonarQubeEnv('sonarqube') {
+                    sh 'mvn clean test sonar:sonar -Dsonar.projectkey=sonar-token'
+                }
+            }
+         }
+         stage('Quality Gate'){
+             steps{
+                 timeout(time: 1, unit: 'HOURS'){
+                     waitForQualityGate abortPipeline: true
+                 }
+             }
+         }
+         stage('Build'){
             steps{
                 sh 'mvn clean install'
             }
-        }
-        stage('SonarQube Analysis'){
-            steps{
-                withSonarQubeEnv('sonarqube') {
-                    sh 'mvn clean test sonar:sonar -Dsonar.projectKey=sonar-token'
-    
-                }
-            }
-        }
-        
+         }
     }
 }
+
