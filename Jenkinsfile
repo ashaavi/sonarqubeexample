@@ -1,7 +1,7 @@
 pipeline {
   agent any
     tools{
-        maven 'Default Maven'
+        maven 'maven'
     }
  stages {
   stage('SCM') {
