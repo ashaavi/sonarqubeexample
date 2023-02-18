@@ -1,20 +1,21 @@
-pipeline{
-    agent {label 'jfrog'}
+peline{
+    agent any
     stages{
-       stage('Git Checkout Stage'){
+        stage('Checkout'){
             steps{
-                git branch: 'main', url: 'https://github.com/artisantek/sonarqube-example.git'
+                  checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/ashaavi/sonarqubeexample.git']])                
             }
-         }        
-       stage('Build Stage'){
+        }
+        stage('Build Stage'){
             steps{
                 sh 'mvn clean install'
             }
-         }
-        stage('SonarQube Analysis Stage') {
+        }
+        stage('Sonarqube Analysis'){
             steps{
-                withSonarQubeEnv('sonarqube') { 
-                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-test"
+                withSonarQubeEnv('sonarQube') {
+                    sh 'mvn clean test sonar:sonar -Dsonar.projectkeys=sonartoken'
+    
                 }
             }
         }
