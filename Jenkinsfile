@@ -14,7 +14,7 @@ pipeline{
         }
         stage('SonarQube Analysis'){
             steps{
-                withSonarQubeEnv(InstallationName: 'sonarqube') {
+                withSonarQubeEnv('sonarqube') {
                     sh 'mvn clean test sonar:sonar -Dsonar.projectKey=sonar-token'
     
                 }
